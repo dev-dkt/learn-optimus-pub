@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>종합 학습 성과 리포트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F9FAFB;
+            color: #333;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            font-size: 1.25rem;
+        }
+        .chart-container {
+            padding: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Report Header -->
+    <div class="card mb-4">
+        <div class="card-header">
+            종합 학습 성과 리포트
+        </div>
+        <div class="card-body">
+            <h2>학습자 이름: 홍길동</h2>
+            <p>학년: 고등학교 2학년</p>
+            <p>리포트 생성일: 2024년 9월 11일</p>
+        </div>
+    </div>
+
+    <!-- Achievement Summary -->
+    <div class="card mb-4">
+        <div class="card-header">
+            성취도 요약
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <h3>목표 성취도</h3>
+                    <p>현재 목표 성취도: 85%</p>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Time and Pattern Analysis -->
+    <div class="card mb-4">
+        <div class="card-header">
+            학습 시간 및 패턴 분석
+        </div>
+        <div class="card-body chart-container">
+            <canvas id="learningTimeChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Problem Solving Ability -->
+    <div class="card mb-4">
+        <div class="card-header">
+            문제 풀이 능력 분석
+        </div>
+        <div class="card-body chart-container">
+            <canvas id="problemSolvingChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Strengths and Weaknesses -->
+    <div class="card mb-4">
+        <div class="card-header">
+            강점 및 약점 분석
+        </div>
+        <div class="card-body">
+            <h3>강점</h3>
+            <ul>
+                <li>수학 문제 풀이 속도 우수</li>
+                <li>이해력 빠름</li>
+            </ul>
+            <h3>약점</h3>
+            <ul>
+                <li>영어 독해 능력 보완 필요</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Performance Change Over Time -->
+    <div class="card mb-4">
+        <div class="card-header">
+            성취도 변화 시각화
+        </div>
+        <div class="card-body chart-container">
+            <canvas id="performanceChangeChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Feedback and Recommendations -->
+    <div class="card mb-4">
+        <div class="card-header">
+            피드백 및 추천 학습 경로
+        </div>
+        <div class="card-body">
+            <p>AI 추천 학습 경로: 추가적인 심화 학습 필요</p>
+            <p>교수자 피드백: 영문 독해 보충 자료를 추천합니다.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script>
+    const ctx1 = document.getElementById('achievementChart').getContext('2d');
+    const achievementChart = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: ['완료된 학습', '남은 학습'],
+            datasets: [{
+                data: [85, 15],
+                backgroundColor: ['#28A745', '#DC3545'],
+            }]
+        },
+        options: {
+            responsive: true,
+        }
+    });
+
+    const ctx2 = document.getElementById('learningTimeChart').getContext('2d');
+    const learningTimeChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['월', '화', '수', '목', '금', '토', '일'],
+            datasets: [{
+                label: '학습 시간 (시간)',
+                data: [2, 3, 4, 2, 5, 6, 1],
+                backgroundColor: '#FFC107',
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx3 = document.getElementById('problemSolvingChart').getContext('2d');
+    const problemSolvingChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: ['수학', '영어', '과학'],
+            datasets: [{
+                label: '문제 풀이 성공률 (%)',
+                data: [90, 65, 80],
+                backgroundColor: ['#17A2B8', '#FFC107', '#28A745'],
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx4 = document.getElementById('performanceChangeChart').getContext('2d');
+    const performanceChangeChart = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ['1주차', '2주차', '3주차', '4주차'],
+            datasets: [{
+                label: '성취도 (%)',
+                data: [70, 75, 80, 85],
+                backgroundColor: 'rgba(0, 86, 179, 0.2)',
+                borderColor: '#0056b3',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

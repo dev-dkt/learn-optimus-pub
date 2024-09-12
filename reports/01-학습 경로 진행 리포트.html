@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습 경로 진행 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+    :root {
+      --primary-color: #3949ab;
+      --secondary-color: #00acc1;
+      --background-color: #f5f5f5;
+      --text-color: #212121;
+      --light-text-color: #757575;
+      --card-background: #ffffff;
+      --success-color: #4caf50;
+      --warning-color: #ff9800;
+      --error-color: #f44336;
+      --chart-color-1: #3949ab;
+      --chart-color-2: #00acc1;
+      --chart-color-3: #4caf50;
+      --chart-color-4: #ffa726;
+      --chart-color-5: #ef5350;
+  }
+  
+  body {
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 20px;
+  }
+  
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+  }
+  
+  .header, .section {
+      background-color: var(--card-background);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+      background-color: var(--primary-color);
+      color: var(--card-background);
+  }
+  
+  .chart-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 16px;
+    }
+    
+    .chart-container {
+        flex: 1 1 calc(50% - 12px);
+        min-width: 250px;
+        height: 400px; /* 높이 더 증가 */
+        position: relative;
+        overflow: visible; /* 변경: overflow를 visible로 설정 */
+    }
+  
+  h1, h2, h3 {
+      font-weight: 700;
+  }
+  
+  h1 {
+      font-size: 28px;
+  }
+  
+  h2 {
+      font-size: 24px;
+      color: var(--primary-color);
+  }
+  
+  h3 {
+      font-size: 18px;
+      color: var(--light-text-color);
+  }
+  
+  .material-icons-round {
+      vertical-align: middle;
+      margin-right: 8px;
+  }
+  
+  .section-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+  }
+  
+  .section-title .material-icons-round {
+      font-size: 28px;
+      color: var(--secondary-color);
+  }
+  
+  button {
+      background-color: var(--secondary-color);
+      color: var(--card-background);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background-color 0.3s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+  }
+  
+  button:hover {
+      background-color: #0097a7;
+  }
+  
+  button:active {
+      transform: scale(0.98);
+  }
+  
+  button .material-icons-round {
+      font-size: 18px;
+      margin-right: 4px;
+  }
+  
+  .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 14px;
+  }
+  
+  .info-item .material-icons-round {
+      color: var(--card-background);
+      margin-right: 12px;
+      font-size: 20px;
+  }
+  
+  .recommendation, .feedback {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 12px;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+  }
+  
+  .recommendation .material-icons-round, .feedback .material-icons-round {
+      color: var(--secondary-color);
+      margin-right: 12px;
+      font-size: 20px;
+      padding-top: 2px;
+  }
+  
+  a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: 500;
+  }
+  
+  a:hover {
+      text-decoration: underline;
+  }
+  
+  .icon-label {
+      display: flex;
+      align-items: center;
+  }
+  
+  .icon-label .material-icons-round {
+      margin-right: 8px;
+  }
+  
+  .heatmap {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      height: 100%;
+  }
+  
+  .heatmap-cell {
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--card-background);
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      padding: 4px;
+      transition: transform 0.2s;
+  }
+  
+  .heatmap-cell:hover {
+      transform: scale(1.1);
+      z-index: 1;
+  }
+  
+  .heatmap-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 12px;
+  }
+  
+  .legend-item {
+      display: flex;
+      align-items: center;
+  }
+  
+  .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      border-radius: 2px;
+  }
+  
+  @media (max-width: 768px) {
+        .chart-container {
+            flex: 1 1 100%;
+            height: 350px; /* 모바일에서의 높이 조정 */
+        }
+    }
+</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="material-icons-round">assessment</i> 학습 경로 진행 리포트</h1>
+            <div class="info-item">
+                <i class="material-icons-round">event</i>
+                <span>생성 날짜: 2024-09-27</span>
+            </div>
+            <div class="info-item">
+                <i class="material-icons-round">person</i>
+                <span>학습자: 김학생, 중2 수학 학습 경로</span>
+            </div>
+            <div class="info-item">
+                <i class="material-icons-round">flag</i>
+                <span>목표 완료일: 2024-12-01</span>
+            </div>
+        </header>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">timeline</i>
+                <h2>학습 경로 시각화</h2>
+            </div>
+            <div class="chart-container" style="height: 200px;">
+                <canvas id="learningPathChart"></canvas>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">pie_chart</i>
+                <h2>학습 성취도 요약</h2>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="learningSpeedChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">analytics</i>
+                <h2>성과 분석 세부화</h2>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="icon-label">
+                        <i class="material-icons-round">bar_chart</i>
+                        <h3>문제 유형별 성공률</h3>
+                    </div>
+                    <canvas id="successRateChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="icon-label">
+                        <i class="material-icons-round">grid_on</i>
+                        <h3>학습 시간 분석 히트맵</h3>
+                    </div>
+                    <div class="heatmap" id="learningTimeHeatmap"></div>
+                    <div class="heatmap-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--success-color);"></div>
+                            <span>짧은 시간, 높은 성공률</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--error-color);"></div>
+                            <span>긴 시간, 낮은 성공률</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">school</i>
+                <h2>보충 학습 및 심화 학습 추천</h2>
+            </div>
+            <div class="recommendation">
+                <i class="material-icons-round">warning</i>
+                <p>연립방정식 문제에서 어려움을 겪고 있습니다. 다음 자료를 확인해보세요: <a href="#">연립방정식 기초 복습</a></p>
+            </div>
+            <div class="recommendation">
+                <i class="material-icons-round">star</i>
+                <p>기초 방정식에서 우수한 성과를 보였습니다. 도전해 보세요: <a href="#">고급 방정식 문제</a></p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">feedback</i>
+                <h2>실시간 피드백</h2>
+            </div>
+            <div class="feedback">
+                <i class="material-icons-round">access_time</i>
+                <p>연립방정식 문제 풀이 시간이 길어지고 있습니다. 복습을 추천합니다.</p>
+            </div>
+            <div class="feedback">
+                <i class="material-icons-round">speed</i>
+                <p>기하 학습 속도가 목표에 비해 2일 느립니다. 학습 계획을 조정해 보세요.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <i class="material-icons-round">add_task</i>
+                <h2>추가 학습 목표 설정</h2>
+            </div>
+            <div class="icon-label">
+                <i class="material-icons-round">lightbulb</i>
+                <p>현재 진행 중인 '방정식' 단원을 완료한 후, '기하'로 학습 목표를 설정하는 것이 어떨까요?</p>
+            </div>
+            <button><i class="material-icons-round">add</i> 목표 설정하기</button>
+        </section>
+    </div>
+
+    <script>
+ 
+      // DOM이 완전히 로드된 후 스크립트 실행
+      document.addEventListener('DOMContentLoaded', function() {
+          // Chart.js가 로드되었는지 확인
+          if (typeof Chart === 'undefined') {
+              console.error('Chart.js is not loaded. Please check the script inclusion.');
+              return;
+          }
+      
+          // 차트 기본 설정
+          Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+          Chart.defaults.color = '#212121';
+      
+          // 차트 색상 팔레트
+          const chartColors = [
+            'rgba(57, 73, 171, 0.7)',
+            'rgba(0, 172, 193, 0.7)',
+            'rgba(76, 175, 80, 0.7)',
+            'rgba(255, 167, 38, 0.7)',
+            'rgba(239, 83, 80, 0.7)'
+        ];
+    
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        font: {
+                            size: 10
+                        }
+                    }
+                }
+            }
+        };
+      
+          // 차트 생성 함수
+          function createChart(id, type, labels, datasets, customOptions = {}) {
+            const canvas = document.getElementById(id);
+            if (!canvas) {
+                console.error(`Canvas element with id '${id}' not found.`);
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+            
+            return new Chart(ctx, {
+                type: type,
+                data: { labels, datasets },
+                options: {
+                    ...commonChartOptions,
+                    ...customOptions,
+                    plugins: {
+                        ...commonChartOptions.plugins,
+                        ...customOptions.plugins,
+                    },
+                    onResize: (chart, size) => {
+                        chart.options.plugins.legend.display = size.width > 300;
+                    }
+                }
+            });
+        }
+      
+          // 학습 경로 시각화 차트
+          createChart('learningPathChart', 'bar', 
+              ['방정식', '기하', '함수', '부등식'],
+              [{
+                  label: '진행률',
+                  data: [70, 30, 0, 0],
+                  backgroundColor: chartColors
+              }],
+              {
+                  indexAxis: 'y',
+                  plugins: {
+                      title: {
+                          display: true,
+                          text: '학습 경로 진행 상황 (%)',
+                          font: { size: 14, weight: 'bold' }
+                      },
+                      legend: { display: false }
+                  },
+                  scales: {
+                      x: { 
+                          beginAtZero: true,
+                          max: 100,
+                          ticks: {
+                              font: {
+                                  size: 10
+                              }
+                          }
+                      },
+                      y: {
+                          ticks: {
+                              font: {
+                                  size: 10
+                              }
+                          }
+                      }
+                  }
+              }
+          );
+      
+          // 성취도 원형 차트
+          createChart('achievementChart', 'doughnut',
+              ['방정식', '기하', '함수', '부등식'],
+              [{
+                  data: [80, 50, 70, 75],
+                  backgroundColor: chartColors
+              }],
+              {
+                  plugins: {
+                      title: {
+                          display: true,
+                          text: '학습 영역별 성취도 (%)',
+                          font: { size: 14, weight: 'bold' }
+                      }
+                  }
+              }
+          );
+      
+          // 학습 속도 비교 차트
+          createChart('learningSpeedChart', 'line',
+              ['1주차', '2주차', '3주차', '4주차'],
+              [{
+                  label: '목표 진도',
+                  data: [25, 50, 75, 100],
+                  borderColor: chartColors[1],
+                  backgroundColor: chartColors[1].replace('0.7', '0.2'),
+                  fill: true
+              }, {
+                  label: '실제 진도',
+                  data: [20, 45, 65, 85],
+                  borderColor: chartColors[0],
+                  backgroundColor: chartColors[0].replace('0.7', '0.2'),
+                  fill: true
+              }],
+              {
+                  plugins: {
+                      title: {
+                          display: true,
+                          text: '학습 속도 비교 (% 완료)',
+                          font: { size: 14, weight: 'bold' }
+                      }
+                  },
+                  scales: {
+                      y: { 
+                          beginAtZero: true,
+                          max: 100,
+                          ticks: {
+                              font: {
+                                  size: 10
+                              }
+                          }
+                      },
+                      x: {
+                          ticks: {
+                              font: {
+                                  size: 10
+                              }
+                          }
+                      }
+                  }
+              }
+          );
+      
+          // 문제 유형별 성공률 차트
+         createChart('successRateChart', 'bar',
+            ['기초 방정식', '연립방정식', '부등식', '함수', '기하'],
+            [{
+                label: '성공률',
+                data: [85, 60, 75, 70, 80],
+                backgroundColor: chartColors,
+            }],
+            {
+
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            font: { size: 10 },
+                            stepSize: 20
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 12 },
+                            color: '#333', // 텍스트 색상 지정
+                            autoSkip: false,
+                            maxRotation: 0,
+                            minRotation: 0,
+                            padding: 10 // 틱과 라벨 사이의 패딩 추가
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 0,
+                        bottom: 30 // 하단 여백 더 증가
+                    }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+        );
+      
+          // 학습 시간 분석 히트맵
+          const heatmapData = [
+            {subject: '기초 방정식', time: 45, success: 85},
+            {subject: '연립방정식', time: 75, success: 60},
+            {subject: '부등식', time: 60, success: 75},
+            {subject: '함수', time: 55, success: 70},
+            {subject: '기하', time: 50, success: 80}
+        ];
+    
+        const heatmapElement = document.getElementById('learningTimeHeatmap');
+        if (heatmapElement) {
+            heatmapElement.style.display = 'grid';
+            heatmapElement.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
+            heatmapElement.style.gap = '8px';
+            heatmapElement.style.height = '329px';
+    
+            heatmapData.forEach(data => {
+                const cell = document.createElement('div');
+                cell.className = 'heatmap-cell';
+                
+                const hue = Math.floor((data.success / 100) * 120);
+                const saturation = 70;
+                const lightness = Math.floor(50 - (data.time / 75) * 25);
+                cell.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                
+                const brightness = lightness;
+                cell.style.color = brightness > 50 ? '#212121' : '#ffffff';
+    
+                cell.innerHTML = `
+                    <div style="font-weight: bold;">${data.subject}</div>
+                    <div>${data.time}분</div>
+                    <div>${data.success}%</div>
+                `;
+                
+                heatmapElement.appendChild(cell);
+            });
+        } else {
+            console.error("Heatmap element not found.");
+        }
+      });
+    </script>
+</body>
+</html>

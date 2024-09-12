@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성취도 리포트</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        h1,
+        h2 {
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+
+        .alert-warning {
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .icon {
+            color: #36A2EB;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        /* 반응형 미디어 쿼리 */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .list-group-item {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .chart-container {
+                height: 200px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            .list-group-item {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4"><i class="fas fa-chart-line icon"></i> 성취도 리포트</h1>
+
+        <!-- 1. 성취도 요약 -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="section-title"><i class="fas fa-trophy icon"></i> 성취도 요약</h2>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="achievementChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>방정식 성취도</strong>: 70% (적용 단계)</li>
+                            <li class="list-group-item"><strong>기하학 성취도</strong>: 40% (이해 단계)</li>
+                            <li class="list-group-item"><strong>확률 성취도</strong>: 15% (기초 지식 단계)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 학습 속도 분석, 문제 풀이 능력 분석, 성취도 변화 시각화를 3컬럼으로 배치 -->
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <!-- 2. 문제 풀이 능력 분석 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="section-title"><i class="fas fa-brain icon"></i> 문제 풀이 능력 분석</h2>
+                        <div class="chart-container">
+                            <canvas id="problemSolvingChart"></canvas>
+                        </div>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle"></i> 확률 문제에서 40%의 낮은 성공률을 기록하고 있습니다. 보충 학습이 필요합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <!-- 3. 학습 속도 분석 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="section-title"><i class="fas fa-stopwatch icon"></i> 학습 속도 분석</h2>
+                        <div class="chart-container">
+                            <canvas id="learningSpeedChart"></canvas>
+                        </div>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle"></i> 방정식 학습 시간은 평균보다 30분 느리게 진행되었습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <!-- 4. 성취도 변화 시각화 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="section-title"><i class="fas fa-chart-line icon"></i> 성취도 변화 시각화</h2>
+                        <div class="chart-container">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 나머지 영역은 1컬럼 배치 -->
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- 5. AI 기반 학습 피드백 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="section-title"><i class="fas fa-robot icon"></i> AI 기반 학습 피드백</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">확률 문제에서 어려움을 겪고 있습니다. 추가 연습 문제를 풀어보세요.</li>
+                            <li class="list-group-item">방정식 성취도가 높습니다. 기하학 학습을 진행하세요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <!-- 6. 교수자 피드백 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="section-title"><i class="fas fa-chalkboard-teacher icon"></i> 교수자 피드백</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">확률 문제에서 성취도가 낮으니, 2단계부터 복습하세요.</li>
+                            <li class="list-group-item">기하학의 이해가 부족합니다. 복습이 필요합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 차트JS 스크립트 -->
+    <script>
+        // 성취도 차트 (파이 차트 크기 줄임)
+        const ctx1 = document.getElementById('achievementChart').getContext('2d');
+        const achievementChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['방정식', '기하학', '확률'],
+                datasets: [{
+                    data: [70, 40, 15],
+                    backgroundColor: ['#36A2EB', '#FFCE56', '#FF6384']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+
+        // 문제 풀이 능력 차트
+        const ctx2 = document.getElementById('problemSolvingChart').getContext('2d');
+        const problemSolvingChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['연립방정식', '확률 문제'],
+                datasets: [{
+                    label: '성공률 (%)',
+                    data: [85, 40],
+                    backgroundColor: ['#36A2EB', '#FF6384']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 학습 속도 차트
+        const ctx3 = document.getElementById('learningSpeedChart').getContext('2d');
+        const learningSpeedChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['방정식', '기하학', '확률'],
+                datasets: [{
+                    label: '평균 학습 속도 대비',
+                    data: [120, 80, 100],
+                    borderColor: '#36A2EB',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 150
+                    }
+                }
+            }
+        });
+
+        // 성취도 변화 차트
+        const ctx4 = document.getElementById('progressChart').getContext('2d');
+        const progressChart = new Chart(ctx4, {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차'],
+                datasets: [{
+                    label: '방정식 성취도 변화 (%)',
+                    data: [40, 50, 60, 70],
+                    borderColor: '#FF6384',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

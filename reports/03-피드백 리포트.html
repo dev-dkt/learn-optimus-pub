@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>피드백 리포트</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center my-4">
+            <h1>피드백 리포트</h1>
+            <p>학습자의 성취도 및 분석 결과를 제공합니다.</p>
+        </div>
+
+        <!-- 리포트 요약 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>리포트 요약</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>성취도 요약</h5>
+                        <div class="chart-container">
+                            <canvas id="achievementChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>문제 풀이 성공률</h5>
+                        <div class="chart-container">
+                            <canvas id="successRateChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 문제 풀이 분석 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>문제 풀이 분석</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="problemSolvingChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 학습 속도 분석 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>학습 속도 분석</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="learningSpeedChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 성취도 변화 시각화 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>성취도 변화 시각화</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="achievementChangeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI 피드백 및 교수자 피드백 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>AI 피드백 및 교수자 피드백</h4>
+            </div>
+            <div class="card-body">
+                <h5>AI 추천 학습 전략</h5>
+                <p>학습자의 성취도에 맞춰 AI가 추천하는 학습 전략입니다.</p>
+
+                <h5>교수자 피드백</h5>
+                <p>교수자가 제공하는 맞춤형 피드백을 통해 학습을 개선할 수 있습니다.</p>
+            </div>
+        </div>
+
+        <!-- 다음 학습 목표 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>다음 학습 목표 및 계획</h4>
+            </div>
+            <div class="card-body">
+                <h5>다음 학습 목표</h5>
+                <p>학습자가 설정한 다음 목표입니다.</p>
+
+                <h5>학습 경로 조정</h5>
+                <p>학습 경로를 조정하여 목표 달성을 위한 전략을 제안합니다.</p>
+
+                <h5>목표 진행률</h5>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 성취도 요약 차트
+        var ctx = document.getElementById('achievementChart').getContext('2d');
+        var achievementChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['성취한 목표', '미성취한 목표'],
+                datasets: [{
+                    label: '성취도',
+                    data: [75, 25],
+                    backgroundColor: ['#4caf50', '#f44336']
+                }]
+            }
+        });
+
+        // 문제 풀이 성공률 차트
+        var ctx = document.getElementById('successRateChart').getContext('2d');
+        var successRateChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['문제 1', '문제 2', '문제 3', '문제 4', '문제 5'],
+                datasets: [{
+                    label: '성공률',
+                    data: [90, 85, 75, 80, 95],
+                    backgroundColor: '#2196f3'
+                }]
+            }
+        });
+
+        // 문제 풀이 분석 차트
+        var ctx = document.getElementById('problemSolvingChart').getContext('2d');
+        var problemSolvingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['유형 1', '유형 2', '유형 3', '유형 4'],
+                datasets: [{
+                    label: '성공률',
+                    data: [85, 70, 95, 60],
+                    backgroundColor: '#ff9800'
+                }]
+            }
+        });
+
+        // 학습 속도 분석 차트
+        var ctx = document.getElementById('learningSpeedChart').getContext('2d');
+        var learningSpeedChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['단원 1', '단원 2', '단원 3', '단원 4', '단원 5'],
+                datasets: [{
+                    label: '학습 시간 (분)',
+                    data: [40, 50, 35, 60, 55],
+                    backgroundColor: '#673ab7',
+                    borderColor: '#673ab7',
+                    fill: false
+                }]
+            }
+        });
+
+        // 성취도 변화 시각화 차트
+        var ctx = document.getElementById('achievementChangeChart').getContext('2d');
+        var achievementChangeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차'],
+                datasets: [{
+                    label: '성취도 변화',
+                    data: [65, 75, 80, 85],
+                    backgroundColor: '#e91e63',
+                    borderColor: '#e91e63',
+                    fill: false
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습자 성취도 리포트</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #F8F9FA;
+    }
+
+    .container {
+      margin-top: 30px;
+    }
+
+    .header {
+      background-color: #F5F5F5;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: #333333;
+      margin: 0;
+    }
+
+    .report-section {
+      background-color: #FFFFFF;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-section h2 {
+      font-size: 20px;
+      color: #444444;
+      margin-bottom: 20px;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+
+    .summary-info {
+      font-size: 16px;
+      color: #666666;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #007BFF;
+    }
+
+    .progress-bar {
+      height: 30px;
+      background-color: #007BFF;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>학습자 성취도 리포트</h1>
+      <p class="summary-info">학습자: 홍길동 | 학년: 중학교 2학년 | 학습 기간: 2024-08-01 ~ 2024-09-30 | 리포트 생성일: 2024-09-30</p>
+    </div>
+
+    <!-- 성취도 요약 -->
+    <div class="report-section">
+      <h2>성취도 요약</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="achievementPieChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="goalBarChart"></canvas>
+          </div>
+          <p class="summary-info">진행률:</p>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0"
+              aria-valuemax="100">75%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 학습 시간 및 학습 패턴 분석 -->
+    <div class="report-section">
+      <h2>학습 시간 및 학습 패턴 분석</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="studyTimeHeatmap"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="efficiencyChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 문제 풀이 능력 분석 -->
+    <div class="report-section">
+      <h2>문제 풀이 능력 분석</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="problemSolvingChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-container">
+            <canvas id="difficultyAnalysisChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 강점 및 약점 분석 -->
+    <div class="report-section">
+      <h2>강점 및 약점 분석</h2>
+      <p>학습자의 강점:</p>
+      <ul class="summary-info">
+        <li><span class="highlight">기초 개념 이해</span>: 90%</li>
+        <li><span class="highlight">문제 해결 능력</span>: 85%</li>
+      </ul>
+      <p>학습자의 약점:</p>
+      <ul class="summary-info">
+        <li><span class="highlight">고급 문제 해결</span>: 50%</li>
+        <li><span class="highlight">분석적 사고</span>: 60%</li>
+      </ul>
+      <p class="summary-info">개선 방안: 고급 문제를 추가 학습하고, 분석적 사고를 위한 추가 훈련이 필요합니다.</p>
+    </div>
+
+    <!-- 성취도 변화 시각화 -->
+    <div class="report-section">
+      <h2>성취도 변화 시각화</h2>
+      <div class="chart-container">
+        <canvas id="performanceChangeChart"></canvas>
+      </div>
+      <p class="summary-info">성취도 하락 원인: 학습 집중도가 부족하고, 고급 문제 풀이에서 어려움을 겪음.</p>
+    </div>
+
+    <!-- AI 및 교수자 피드백 -->
+    <div class="report-section">
+      <h2>AI 및 교수자 피드백</h2>
+      <p class="summary-info">AI 추천 학습 경로: 고급 문제에 집중하는 학습 경로를 추천합니다.</p>
+      <p class="summary-info">교수자 피드백 요약: 학습자에게 추가적인 피드백 제공 후, 성취도는 10% 향상되었습니다.</p>
+    </div>
+  </div>
+
+  <script>
+    // 성취도 파이 차트
+    const achievementPieCtx = document.getElementById('achievementPieChart').getContext('2d');
+    new Chart(achievementPieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['달성', '진행 중', '부족'],
+        datasets: [{
+          data: [75, 15, 10],
+          backgroundColor: ['#28A745', '#FFC107', '#DC3545']
+        }]
+      }
+    });
+
+    // 목표 성취도 막대 차트
+    const goalBarCtx = document.getElementById('goalBarChart').getContext('2d');
+    new Chart(goalBarCtx, {
+      type: 'bar',
+      data: {
+        labels: ['기초', '이해', '적용', '분석'],
+        datasets: [{
+          label: '성취도 (%)',
+          data: [90, 80, 60, 50],
+          backgroundColor: ['#007BFF', '#007BFF', '#007BFF', '#007BFF']
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // 학습 시간 히트맵 (임시 데이터)
+    const studyTimeHeatmapCtx = document.getElementById('studyTimeHeatmap').getContext('2d');
+    new Chart(studyTimeHeatmapCtx, {
+      type: 'bar',
+      data: {
+        labels: ['월', '화', '수', '목', '금'],
+        datasets: [{
+          label: '학습 시간 (시간)',
+          data: [2, 3, 2, 4, 1],
+          backgroundColor: '#007BFF'
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // 학습 효율성 분석 차트
+    const efficiencyCtx = document.getElementById('efficiencyChart').getContext('2d');
+    new Chart(efficiencyCtx, {
+      type: 'line',
+      data: {
+        labels: ['단원 1', '단원 2', '단원 3', '단원 4'],
+        datasets: [{
+          label: '학습 효율성 (%)',
+          data: [85, 80, 60, 70],
+          borderColor: '#28A745',
+          backgroundColor: 'rgba(40, 167, 69, 0.2)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // 문제 풀이 능력 분석 차트
+    const problemSolvingCtx = document.getElementById('problemSolvingChart').getContext('2d');
+    new Chart(problemSolvingCtx, {
+      type: 'bar',
+      data: {
+        labels: ['기초', '중급', '고급'],
+        datasets: [{
+          label: '성공률 (%)',
+          data: [90, 70, 50],
+          backgroundColor: ['#007BFF', '#FFC107', '#DC3545']
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // 문제 난이도별 성취도 분석
+    const difficultyAnalysisCtx = document.getElementById('difficultyAnalysisChart').getContext('2d');
+    new Chart(difficultyAnalysisCtx, {
+      type: 'bar',
+      data: {
+        labels: ['기초', '중급', '고급'],
+        datasets: [{
+          label: '성취도 (%)',
+          data: [90, 70, 50],
+          backgroundColor: ['#28A745', '#FFC107', '#DC3545']
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // 성취도 변화 시각화
+    const performanceChangeCtx = document.getElementById('performanceChangeChart').getContext('2d');
+    new Chart(performanceChangeCtx, {
+      type: 'line',
+      data: {
+        labels: ['1주차', '2주차', '3주차'],
+        datasets: [{
+          label: '성취도 (%)',
+          data: [75, 80, 78],
+          borderColor: '#007BFF',
+          backgroundColor: 'rgba(0, 123, 255, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

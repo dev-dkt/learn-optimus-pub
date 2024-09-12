@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교수자 피드백 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F9FAFB;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1A1A1A;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .feedback-section {
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #666666;
+        }
+
+        .feedback-highlight {
+            background-color: #0056b3;
+            color: #FFFFFF;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .chart {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #0056b3;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #003d7a;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        .student-info {
+            background-color: #f0f0f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .student-info div {
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .student-info div span {
+            font-weight: bold;
+            color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>교수자 피드백 리포트</h1>
+
+        <!-- 학습자 정보 -->
+        <div class="student-info">
+            <div><span>이름:</span> 홍길동</div>
+            <div><span>학년:</span> 중학교 3학년</div>
+            <div><span>학습 기간:</span> 2024년 9월 1일 - 9월 30일</div>
+            <div><span>리포트 생성일:</span> 2024년 9월 11일</div>
+        </div>
+
+        <div class="feedback-section">
+            <h2>학습자 성취도 분석</h2>
+            <div class="feedback-highlight">현재 성취도: 85%</div>
+            <p>학습자가 지난주보다 성취도가 10% 상승했습니다. 현재까지 학습한 과목의 전반적인 이해도는 매우 높은 수준이며, 추가적인 심화 학습이 권장됩니다.</p>
+        </div>
+
+        <div class="feedback-section">
+            <h2>개선점 및 강점</h2>
+            <div class="summary">
+                <div class="card">
+                    <h3>개선점</h3>
+                    <p>논리적 사고 과정에서의 미세한 오류가 자주 발생하고 있습니다. 주어진 문제를 다양한 방식으로 접근하는 연습이 필요합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>강점</h3>
+                    <p>수학적 계산 능력과 응용력에서 두각을 나타내고 있습니다. 특히 복잡한 문제를 해결하는 데 강점이 있습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h2>학습 시간 분석</h2>
+            <div class="chart">
+                <canvas id="studyTimeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h2>학습 패턴 분석</h2>
+            <div class="chart">
+                <canvas id="studyPatternChart"></canvas>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h2>추가 학습 제안</h2>
+            <p>추가로 학습이 필요한 영역으로는 수리 논리와 비판적 사고가 있습니다. 이 영역을 강화하기 위해 심화 학습 모듈이 제안되었습니다.</p>
+            <a href="#" class="btn">심화 학습 모듈 시작하기</a>
+        </div>
+    </div>
+
+    <script>
+        // 학습 시간 분석 차트 데이터
+        const studyTimeCtx = document.getElementById('studyTimeChart').getContext('2d');
+        const studyTimeChart = new Chart(studyTimeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['월', '화', '수', '목', '금', '토', '일'],
+                datasets: [{
+                    label: '학습 시간 (시간)',
+                    data: [3, 4, 2, 5, 3, 6, 1],
+                    backgroundColor: '#0056b3',
+                    borderColor: '#003d7a',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '시간'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '요일'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 학습 패턴 분석 차트 데이터
+        const studyPatternCtx = document.getElementById('studyPatternChart').getContext('2d');
+        const studyPatternChart = new Chart(studyPatternCtx, {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차'],
+                datasets: [{
+                    label: '성취도 변화 (%)',
+                    data: [75, 80, 85, 90],
+                    backgroundColor: 'rgba(0, 86, 179, 0.2)',
+                    borderColor: '#0056b3',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '성취도 (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '주차'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
