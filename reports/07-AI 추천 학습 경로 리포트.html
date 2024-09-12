@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 추천 학습 경로 리포트</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 24px;
+            color: var(--text-color);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        h3 {
+            font-size: 20px;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        p, li {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .col-6 {
+            grid-column: span 6;
+        }
+        .col-12 {
+            grid-column: span 12;
+        }
+        .chart {
+            margin-bottom: 40px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            padding: 3px;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+        }
+        .progress-bar-fill {
+            display: block;
+            height: 22px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            transition: width 500ms ease-in-out;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .col-6 {
+                grid-column: span 12;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI 추천 학습 경로 리포트</h1>
+            <div class="card">
+                <div class="grid">
+                    <div class="col-6">
+                        <p><strong>학습자:</strong> 김하늘</p>
+                        <p><strong>학습 기간:</strong> 2024-09-20 ~ 2024-09-26</p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>리포트 생성 날짜:</strong> 2024-09-27</p>
+                        <p><strong>버전:</strong> 2.1</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>1. 현재 학습 성취도 분석</h2>
+            <div class="chart" id="achievementChart"></div>
+        </section>
+
+        <section>
+            <h2>2. 학습 패턴 분석</h2>
+            <div class="chart" id="studyPatternChart"></div>
+            <p>하루 평균 학습 시간: 3시간, 집중도: 75%</p>
+        </section>
+
+        <section>
+            <h2>3. 추천 학습 경로</h2>
+            <div class="grid">
+                <div class="col-6">
+                    <div class="card">
+                        <h3>수학</h3>
+                        <p>심화 학습 권장</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <h3>영어</h3>
+                        <p>보충 학습 권장</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. 학습 목표 설정</h2>
+            <div class="card">
+                <p><strong>목표:</strong> 1주일 내로 영어 단어 50개 암기</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. 추천 학습 자료</h2>
+            <div class="grid">
+                <div class="col-6">
+                    <div class="card">
+                        <h3>보충 학습 자료</h3>
+                        <ul>
+                            <li>영어 문법: 기본 개념 정리 PDF</li>
+                            <li>수학 연습 문제: 기초 문제집</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <h3>심화 학습 자료</h3>
+                        <ul>
+                            <li>수학 심화 문제: 난이도 높은 문제 풀이 자료</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>6. 예상 학습 완료 시간</h2>
+            <div class="card">
+                <h3>수학</h3>
+                <div class="progress-bar">
+                    <span class="progress-bar-fill" style="width: 66.7%;">2시간</span>
+                </div>
+                <h3>영어</h3>
+                <div class="progress-bar">
+                    <span class="progress-bar-fill" style="width: 100%;">3시간</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. 학습 경로 수정 제안</h2>
+            <div class="card">
+                <p>수학에서 일부 중급 문제로 전환 권장</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>8. 성과 추적 및 피드백</h2>
+            <div class="card">
+                <p>이번 주 성취도 5% 향상, 다음 주에 영어 복습 권장</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 성취도 차트
+        const achievementData = [
+            {subject: "수학", score: 80},
+            {subject: "영어", score: 60}
+        ];
+
+        const achievementChart = d3.select("#achievementChart")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", 300);
+
+        const achievementX = d3.scaleBand()
+            .range([0, 500])
+            .padding(0.1);
+        const achievementY = d3.scaleLinear()
+            .range([250, 0]);
+
+        achievementX.domain(achievementData.map(d => d.subject));
+        achievementY.domain([0, 100]);
+
+        achievementChart.selectAll(".bar")
+            .data(achievementData)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => achievementX(d.subject))
+            .attr("width", achievementX.bandwidth())
+            .attr("y", d => achievementY(d.score))
+            .attr("height", d => 250 - achievementY(d.score))
+            .attr("fill", "#0056b3");
+
+        achievementChart.append("g")
+            .attr("transform", "translate(0,250)")
+            .call(d3.axisBottom(achievementX));
+
+        achievementChart.append("g")
+            .call(d3.axisLeft(achievementY));
+
+        // 학습 패턴 히트맵
+        const studyPatternData = [
+            {day: "월", hour: 1, value: 30},
+            {day: "월", hour: 2, value: 50},
+            {day: "월", hour: 3, value: 80},
+            {day: "화", hour: 1, value: 70},
+            {day: "화", hour: 2, value: 90},
+            {day: "화", hour: 3, value: 60},
+            {day: "수", hour: 1, value: 40},
+            {day: "수", hour: 2, value: 60},
+            {day: "수", hour: 3, value: 75}
+        ];
+
+        const studyPatternChart = d3.select("#studyPatternChart")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", 200);
+
+        const patternX = d3.scaleBand()
+            .range([0, 500])
+            .domain(["월", "화", "수", "목", "금", "토", "일"]);
+
+        const patternY = d3.scaleBand()
+            .range([0, 150])
+            .domain([1, 2, 3]);
+
+        const patternColor = d3.scaleLinear()
+            .range(["white", "#0056b3"])
+            .domain([0, 100]);
+
+        studyPatternChart.selectAll()
+            .data(studyPatternData)
+            .enter().append("rect")
+            .attr("x", d => patternX(d.day))
+            .attr("y", d => patternY(d.hour))
+            .attr("width", patternX.bandwidth())
+            .attr("height", patternY.bandwidth())
+            .style("fill", d => patternColor(d.value));
+
+        studyPatternChart.append("g")
+            .attr("transform", "translate(0,150)")
+            .call(d3.axisBottom(patternX));
+
+        studyPatternChart.append("g")
+            .call(d3.axisLeft(patternY));
+    </script>
+</body>
+</html>

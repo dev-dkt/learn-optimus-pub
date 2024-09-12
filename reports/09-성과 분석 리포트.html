@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성과 분석 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: var(--background-color);
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333333;
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+        .header-info {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .progress-bar {
+            background-color: var(--border-color);
+            border-radius: 4px;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+        .progress-bar-fill {
+            background-color: var(--primary-color);
+            height: 100%;
+            border-radius: 4px;
+            width: 80%;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #003d7a;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>성과 분석 리포트</h1>
+        <div class="header-info">
+            김민준 | 중학교 2학년 | 2024년 1월 ~ 2024년 8월 | 생성일: 2024년 9월 20일
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>성취도 요약</h2>
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>목표 성취도</h2>
+                <div class="chart-container">
+                    <canvas id="goalChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>학습 진행률</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+            </div>
+            <p>80% 완료</p>
+        </div>
+
+        <div class="card">
+            <h2>문제 풀이 능력 분석</h2>
+            <div class="chart-container">
+                <canvas id="problemSolvingChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>강점 및 약점 분석</h2>
+            <p><strong>강점:</strong> 논리적 사고력, 수학 공식 이해도</p>
+            <p><strong>약점:</strong> 과학 실험 분석 능력</p>
+            <p><strong>개선 방안:</strong> 과학 실험 분석 관련 학습 경로 추가 및 보충 학습 제공</p>
+        </div>
+
+        <div class="card">
+            <h2>성취도 변화</h2>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>AI 및 교수자 피드백</h2>
+            <p><strong>AI 추천 경로:</strong> 과학 과목 추가 학습, 수학 심화 학습</p>
+            <p><strong>교수자 피드백:</strong> "학습 진행이 원활하며, 보충 학습이 필요한 부분에 대한 성과가 기대됩니다."</p>
+        </div>
+
+        <a href="#" class="btn">상세 보고서 보기</a>
+    </div>
+
+    <script>
+        const chartColors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        };
+
+        // 성취도 요약 차트
+        new Chart(document.getElementById('achievementChart'), {
+            type: 'pie',
+            data: {
+                labels: ['수학', '영어', '과학'],
+                datasets: [{
+                    data: [75, 80, 70],
+                    backgroundColor: chartColors
+                }]
+            },
+            options: commonOptions
+        });
+
+        // 목표 성취도 차트
+        new Chart(document.getElementById('goalChart'), {
+            type: 'bar',
+            data: {
+                labels: ['목표', '현재'],
+                datasets: [{
+                    data: [85, 80],
+                    backgroundColor: chartColors
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 문제 풀이 능력 분석 차트
+        new Chart(document.getElementById('problemSolvingChart'), {
+            type: 'bar',
+            data: {
+                labels: ['고난도', '중난도', '저난도'],
+                datasets: [{
+                    data: [70, 85, 95],
+                    backgroundColor: chartColors[0]
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 성취도 변화 차트
+        new Chart(document.getElementById('progressChart'), {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차'],
+                datasets: [{
+                    data: [75, 80, 70],
+                    borderColor: chartColors[0],
+                    fill: false
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

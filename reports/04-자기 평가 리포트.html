@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자기 평가 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        h3 {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #004494;
+        }
+        .progress-bar {
+            background-color: var(--border-color);
+            border-radius: 4px;
+            height: 20px;
+            margin-bottom: 16px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--success-color);
+            transition: width 0.5s ease-out;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                height: 250px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>자기 평가 리포트</h1>
+        
+        <div class="card">
+            <h2>학습자 정보</h2>
+            <p><strong>이름:</strong> 홍길동</p>
+            <p><strong>학습 기간:</strong> 2024년 9월 1일 ~ 2024년 9월 7일</p>
+            <p><strong>리포트 생성일:</strong> 2024년 9월 8일</p>
+        </div>
+
+        <div class="card">
+            <h2>1. 학습 목표 설정</h2>
+            <textarea placeholder="이번 주/달의 학습 목표를 입력하세요." rows="4">이번 주에 영어 단어 100개를 외우고, 매일 30분씩 영어 듣기 연습을 한다.</textarea>
+            <h3>목표 달성률</h3>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 90%;"></div>
+            </div>
+            <p>90% 달성</p>
+            <div class="chart-container">
+                <canvas id="goalAchievementChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. 학습 강점 및 약점 분석</h2>
+            <textarea placeholder="강점과 약점을 분석하여 입력하세요." rows="4">문법 문제는 정확하게 풀었으나, 듣기 문제에서 이해 속도가 느렸다.</textarea>
+            <div class="chart-container">
+                <canvas id="strengthWeaknessChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>3. 학습 목표 달성 여부 평가</h2>
+            <textarea placeholder="목표 달성 여부와 실패 이유를 입력하세요." rows="4">영어 단어 100개 중 90개를 외웠으나, 듣기 연습은 목표한 시간을 채우지 못했다. 이유는 학습 시간을 충분히 확보하지 못했기 때문이다.</textarea>
+        </div>
+
+        <div class="card">
+            <h2>4. 학습 개선 방안</h2>
+            <textarea placeholder="다음 주/달의 학습 개선 방안을 입력하세요." rows="4">다음 주에는 듣기 연습을 매일 45분으로 늘리고, 아침에 일찍 일어나서 학습 시간을 확보한다.</textarea>
+        </div>
+
+        <div class="card">
+            <h2>5. AI 분석 및 추천 경로</h2>
+            <p>AI 분석에 따르면 듣기 영역에서 약점이 발견되었으므로, 추가적으로 듣기 연습을 위한 3개의 학습 경로를 추천합니다.</p>
+            <div class="chart-container">
+                <canvas id="aiRecommendationChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>6. 교수자 피드백</h2>
+            <p><strong>교수자 피드백:</strong> 문법에서는 매우 훌륭한 성과를 보였으나, 듣기 영역에서 개선이 필요합니다. 매일 듣기 연습을 10분씩 더 늘리면 좋겠습니다.</p>
+            <textarea placeholder="교수자 피드백에 대한 의견을 입력하세요." rows="4"></textarea>
+        </div>
+
+        <div class="card">
+            <h2>7. 학습 성과 요약</h2>
+            <p>이번 주 학습 목표 90% 달성, 듣기 연습이 부족하여 보충 필요.</p>
+            <div class="chart-container">
+                <canvas id="performanceSummaryChart"></canvas>
+            </div>
+        </div>
+
+        <button class="btn">리포트 저장</button>
+    </div>
+
+    <script>
+        const chartColors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+
+        // 목표 달성률 차트
+        new Chart(document.getElementById('goalAchievementChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['달성', '미달성'],
+                datasets: [{
+                    data: [90, 10],
+                    backgroundColor: [chartColors[0], chartColors[3]]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: '목표 달성률',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 강점/약점 분석 차트
+        new Chart(document.getElementById('strengthWeaknessChart'), {
+            type: 'bar',
+            data: {
+                labels: ['문법', '듣기', '읽기', '쓰기'],
+                datasets: [{
+                    label: '강점',
+                    data: [90, 60, 80, 75],
+                    backgroundColor: chartColors[1]
+                }, {
+                    label: '약점',
+                    data: [10, 40, 20, 25],
+                    backgroundColor: chartColors[3]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: '강점/약점 분석',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // AI 추천 경로 분석 차트
+        new Chart(document.getElementById('aiRecommendationChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['듣기 연습', '단어 학습', '문법 복습'],
+                datasets: [{
+                    data: [50, 30, 20],
+                    backgroundColor: chartColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'AI 추천 학습 경로',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 성과 요약 차트
+        new Chart(document.getElementById('performanceSummaryChart'), {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차'],
+                datasets: [{
+                    label: '성취도',
+                    data: [70, 75, 85, 90],
+                    borderColor: chartColors[0],
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: '성취도 변화',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

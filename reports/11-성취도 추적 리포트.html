@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성취도 추적 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #004494;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>성취도 추적 리포트</h1>
+        
+        <div class="card">
+            <h2>1. 학습자 정보 및 요약</h2>
+            <p><strong>학습자 이름:</strong> 김철수</p>
+            <p><strong>학년:</strong> 3학년, <strong>반:</strong> 2반</p>
+            <p><strong>학습 기간:</strong> 2024년 3월 ~ 2024년 9월</p>
+            <p><strong>주요 성과 요약:</strong> 성취도 85%, 목표 달성률 90%, 주요 과목 성적: 수학 95%, 영어 88%</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>2. 성취도 변화 시각화</h2>
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>3. 학습 시간 및 패턴 분석</h2>
+                <div class="chart-container">
+                    <canvas id="studyPatternChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>4. 성취도 하락 원인 분석</h2>
+            <p>5월 중 성취도 하락 (성적 5% 하락), 학습 시간 부족 및 과제 제출 누락 확인</p>
+            <p><strong>개선 방안:</strong> 학습 시간 재조정 및 과제 관리 개선</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>5. 강점 및 약점 분석</h2>
+                <p><strong>강점:</strong> 수학 (문제 해결 능력), 영어 (독해 능력)</p>
+                <p><strong>약점:</strong> 과학 (이론 이해 부족)</p>
+                <p><strong>추천 학습 전략:</strong> 과학 이론 강화 학습 및 문제 풀이 추가</p>
+            </div>
+            <div class="card">
+                <h2>6. AI 학습 경로 추천</h2>
+                <p><strong>AI 추천:</strong> 수학에서 고급 문제 풀이 추가, 영어 문법 강화</p>
+                <p><strong>성취도 예측:</strong> 현재 성취도를 유지할 경우, 2024년 12월 목표 성취도 92% 달성 가능</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>7. 교수자 피드백 및 성과 변화</h2>
+            <p><strong>교수자 피드백:</strong> 문제 풀이 방법 개선, 과학 이론 강화 필요</p>
+            <div class="chart-container">
+                <canvas id="feedbackEffectChart"></canvas>
+            </div>
+            <p><strong>추가 목표:</strong> 2024년 12월까지 과학 성취도 90% 달성</p>
+        </div>
+
+        <a href="#" class="btn">상세 보고서 다운로드</a>
+    </div>
+
+    <script>
+        const chartColors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+
+        // 성취도 변화 시각화 차트
+        new Chart(document.getElementById('achievementChart'), {
+            type: 'line',
+            data: {
+                labels: ['3월', '4월', '5월', '6월', '7월', '8월', '9월'],
+                datasets: [{
+                    label: '성취도',
+                    data: [80, 82, 78, 85, 88, 86, 90],
+                    borderColor: chartColors[0],
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 학습 시간 및 패턴 분석 차트
+        new Chart(document.getElementById('studyPatternChart'), {
+            type: 'bar',
+            data: {
+                labels: ['월', '화', '수', '목', '금', '토', '일'],
+                datasets: [{
+                    label: '학습 시간 (시간)',
+                    data: [3, 4, 3, 5, 4, 2, 1],
+                    backgroundColor: chartColors[1]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 교수자 피드백 효과 차트
+        new Chart(document.getElementById('feedbackEffectChart'), {
+            type: 'bar',
+            data: {
+                labels: ['수학', '영어', '과학'],
+                datasets: [{
+                    label: '피드백 전',
+                    data: [90, 85, 75],
+                    backgroundColor: chartColors[2]
+                }, {
+                    label: '피드백 후',
+                    data: [95, 88, 72],
+                    backgroundColor: chartColors[3]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습 진행 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background-color: var(--border-color);
+            border-radius: 4px;
+            height: 20px;
+            margin-bottom: 16px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--success-color);
+            transition: width 0.5s ease-out;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                height: 250px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="card">
+            <h1>학습 진행 리포트</h1>
+            <p><strong>학습자:</strong> 홍길동 | <strong>학년:</strong> 고등학교 2학년</p>
+            <p><strong>학습 시작일:</strong> 2024년 9월 1일 | <strong>현재 학습 경로:</strong> 수학 심화 과정</p>
+            <p><strong>리포트 생성일:</strong> 2024년 9월 28일</p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 75%;"></div>
+            </div>
+            <p>학습 경로 진행 상황: 75% 완료</p>
+        </header>
+
+        <section class="grid">
+            <div class="card">
+                <h2>학습 경로 요약</h2>
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>과목별 성취도 분석</h2>
+                <div class="chart-container">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>학습 시간 및 패턴 분석</h2>
+            <div id="heatmap"></div>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>강점 및 약점 분석</h2>
+                <div class="chart-container">
+                    <canvas id="strengthWeaknessChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>성취도 변화</h2>
+                <div class="chart-container">
+                    <canvas id="achievementChangeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>AI 추천 학습 경로</h2>
+                <p>AI 분석 결과, 다음과 같은 학습 경로를 추천합니다:</p>
+                <ul>
+                    <li>수학: 미적분 심화 학습</li>
+                    <li>과학: 물리 기초 개념 보강</li>
+                    <li>영어: 듣기 실력 향상을 위한 팟캐스트 학습</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>교수자 피드백</h2>
+                <p>"수학 분야에서 우수한 성과를 보이고 있습니다. 다만, 과학 과목에서 기초 개념 이해도를 높일 필요가 있어 보입니다. 영어는 꾸준히 향상되고 있으나, 듣기 영역에 더 집중하면 좋겠습니다."</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>향후 학습 계획</h2>
+            <p><strong>추가 학습 목표:</strong> 과학 기초 개념 강화, 영어 듣기 실력 향상</p>
+            <p><strong>예상 달성 기간:</strong> 4주</p>
+            <p><strong>추천 학습 리소스:</strong> 과학 기초 개념 온라인 강의, 영어 뉴스 팟캐스트</p>
+        </section>
+    </div>
+
+    <script>
+        const chartColors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+
+        // 학습 경로 진행률 차트
+        new Chart(document.getElementById('progressChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['완료', '남은 과정'],
+                datasets: [{
+                    data: [75, 25],
+                    backgroundColor: [chartColors[0], chartColors[3]]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: '학습 경로 진행률',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 과목별 성취도 차트
+        new Chart(document.getElementById('subjectChart'), {
+            type: 'bar',
+            data: {
+                labels: ['수학', '과학', '영어', '국어'],
+                datasets: [{
+                    label: '성취도',
+                    data: [85, 70, 75, 80],
+                    backgroundColor: chartColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: '과목별 성취도',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 강점 및 약점 분석 차트
+        new Chart(document.getElementById('strengthWeaknessChart'), {
+            type: 'radar',
+            data: {
+                labels: ['문제 해결력', '개념 이해', '암기력', '응용력', '집중력'],
+                datasets: [{
+                    label: '학습자 능력',
+                    data: [85, 75, 70, 80, 90],
+                    backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                    borderColor: chartColors[0],
+                    pointBackgroundColor: chartColors[0]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '강점 및 약점 분석',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // 성취도 변화 차트
+        new Chart(document.getElementById('achievementChangeChart'), {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차'],
+                datasets: [{
+                    label: '성취도',
+                    data: [70, 75, 80, 85],
+                    borderColor: chartColors[0],
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '성취도 변화',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 히트맵 생성
+        const heatmapData = [
+            {day: '월', hour: 9, value: 5},
+            {day: '화', hour: 10, value: 7},
+            {day: '수', hour: 11, value: 3},
+            {day: '목', hour: 14, value: 8},
+            {day: '금', hour: 15, value: 6},
+            {day: '토', hour: 13, value: 9},
+            {day: '일', hour: 16, value: 4}
+        ];
+
+        const margin = {top: 30, right: 30, bottom: 30, left: 30},
+              width = 450 - margin.left - margin.right,
+              height = 300 - margin.top - margin.bottom;
+
+        const svg = d3.select("#heatmap")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const days = ['월', '화', '수', '목', '금', '토', '일'];
+        const hours = [9, 10, 11, 12, 13, 14, 15, 16];
+
+        const x = d3.scaleBand()
+            .range([0, width])
+            .domain(days)
+            .padding(0.01);
+
+        svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(x));
+
+        const y = d3.scaleBand()
+            .range([height, 0])
+            .domain(hours)
+            .padding(0.01);
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        const colorScale = d3.scaleSequential()
+            .interpolator(d3.interpolateBlues)
+            .domain([0, 10]);
+
+        svg.selectAll()
+            .data(heatmapData)
+            .enter()
+            .append("rect")
+            .attr("x", d => x(d.day))
+            .attr("y", d => y(d.hour))
+            .attr("width", x.bandwidth())
+            .attr("height", y.bandwidth())
+            .style("fill", d => colorScale(d.value));
+
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", -10)
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
+            .text("학습 시간 패턴 분석");
+</script>

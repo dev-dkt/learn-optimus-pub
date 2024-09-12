@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습 목표 달성 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17A2B8;
+            --accent-color: #FFC107;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --danger-color: #DC3545;
+            --info-color: #17A2B8;
+            --background-color: #F9FAFB;
+            --text-color: #333333;
+            --border-color: #E5E5E5;
+        }
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .progress-bar {
+            background-color: var(--border-color);
+            border-radius: 4px;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease-out;
+        }
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+        }
+        .heatmap {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+        .heatmap-cell {
+            stroke: #fff;
+        }
+        .heatmap-label {
+            font-size: 12px;
+        }        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>학습 목표 달성 리포트</h1>
+        
+        <div class="card">
+            <h2>학습자 정보</h2>
+            <p><strong>이름:</strong> 홍길동</p>
+            <p><strong>학년/과정:</strong> 고등학교 2학년</p>
+            <p><strong>리포트 생성 날짜:</strong> 2024년 9월 15일</p>
+            <p><strong>학습 기간:</strong> 2024년 8월 1일 ~ 2024년 8월 31일</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>목표 달성률</h2>
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h2>단계별 진행 상황</h2>
+                <h3>1단계 (기본 학습)</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 100%; background-color: var(--success-color);"></div>
+                </div>
+                <h3>2단계 (심화 학습)</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 75%; background-color: var(--warning-color);"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+          <h2>학습 시간 및 활동 분석</h2>
+          <h3>주간 학습 시간 히트맵</h3>
+          <div id="heatmap"></div>
+        </div>
+
+        <div class="card">
+            <h2>목표와 성취도 변화</h2>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>AI 추천 학습 경로</h2>
+            <p>현재 성취도를 기반으로 AI가 추천하는 보충 학습 경로:</p>
+            <ul>
+                <li>영어 듣기 학습 2시간 추가 권장</li>
+                <li>어휘 능력 강화를 위해 '단어 테스트' 1회 추가</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>교수자 피드백</h2>
+            <p>"영어 독해력은 우수하지만, 듣기 부분이 약하니 추가 학습을 권장합니다."</p>
+            <h3>피드백 후 성과 변화</h3>
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chartColors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+
+        // 목표 달성률 차트
+        new Chart(document.getElementById('achievementChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['달성', '미달성'],
+                datasets: [{
+                    data: [85, 15],
+                    backgroundColor: [chartColors[0], chartColors[3]]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        // 활동 분석 차트
+        new Chart(document.getElementById('activityChart'), {
+            type: 'bar',
+            data: {
+                labels: ['집중 학습', '일반 학습'],
+                datasets: [{
+                    label: '학습 시간 (시간)',
+                    data: [45, 15],
+                    backgroundColor: chartColors[1]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 성취도 변화 차트
+        new Chart(document.getElementById('progressChart'), {
+            type: 'line',
+            data: {
+                labels: ['1주차', '2주차', '3주차', '4주차', '5주차', '6주차', '7주차', '8주차'],
+                datasets: [{
+                    label: '성취도',
+                    data: [60, 65, 70, 72, 75, 78, 82, 85],
+                    borderColor: chartColors[0],
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 피드백 효과 차트
+        new Chart(document.getElementById('feedbackChart'), {
+            type: 'bar',
+            data: {
+                labels: ['피드백 전', '피드백 후'],
+                datasets: [{
+                    label: '성취도',
+                    data: [70, 85],
+                    backgroundColor: [chartColors[2], chartColors[0]]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 히트맵 생성 함수
+        // D3.js를 사용한 히트맵 생성 함수
+        function createHeatmap() {
+            const days = ['월', '화', '수', '목', '금', '토', '일'];
+            const times = Array.from({length: 24}, (_, i) => i);
+
+            // 샘플 데이터 생성 (실제 데이터로 대체해야 함)
+            const data = days.flatMap(day => 
+                times.map(time => ({
+                    day,
+                    time,
+                    value: Math.random() // 0-1 사이의 무작위 값
+                }))
+            );
+
+            const margin = {top: 30, right: 30, bottom: 30, left: 30};
+            const width = 600 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const svg = d3.select("#heatmap")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .range([0, width])
+                .domain(days)
+                .padding(0.01);
+
+            const y = d3.scaleBand()
+                .range([height, 0])
+                .domain(times)
+                .padding(0.01);
+
+            const color = d3.scaleSequential()
+                .interpolator(d3.interpolateBlues)
+                .domain([0, 1]);
+
+            svg.selectAll()
+                .data(data, d => d.day+':'+d.time)
+                .join("rect")
+                .attr("x", d => x(d.day))
+                .attr("y", d => y(d.time))
+                .attr("width", x.bandwidth())
+                .attr("height", y.bandwidth())
+                .attr("class", "heatmap-cell")
+                .style("fill", d => color(d.value))
+                .on("mouseover", function(event, d) {
+                    d3.select(this).style("stroke", "#000");
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`${d.day}요일 ${d.time}시: ${Math.round(d.value * 100)}% 활동`)
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).style("stroke", "none");
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .attr("class", "heatmap-label");
+
+            svg.append("g")
+                .call(d3.axisLeft(y).tickValues(y.domain().filter(d => d % 3 === 0)))
+                .attr("class", "heatmap-label");
+
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("position", "absolute")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "10px");
+        }
+
+        createHeatmap();
+    </script>
+</body>
+</html>
