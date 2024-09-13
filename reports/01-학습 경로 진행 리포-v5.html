@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학습 경로 진행 리포트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles-v2.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="report-title">학습 경로 진행 리포트</div>
+                <div class="report-info">
+                    <span class="material-icons">person</span> 김학생 | 중2 수학 학습 경로 | 목표 완료일: 2024-12-01
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <div class="head">
+                    <h2>학습 경로 시각화</h2>
+                </div>
+                <div class="body">
+                    <div class="card">
+                        <div class="head">
+                            <h3>진행 상황</h3>
+                        </div>
+                        <div class="body">
+                            <div class="progress-bar">
+                                <div class="progress-bar-inner">방정식 70% 완료</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-inner" style="width: 30%">기하 30% 완료</div>
+                            </div>
+                            <ul class="step-list">
+                                <li>방정식 - 70% 완료, 예상 완료일: 2024-09-30</li>
+                                <li>기하 - 30% 완료, 예상 완료일: 2024-10-15</li>
+                            </ul>
+                        </div>
+                        <div class="tail"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="head">
+                    <h2>학습 성취도 요약</h2>
+                </div>
+                <div class="body">
+                    <div class="grid-sub-container">
+                        <div class="card">
+                            <div class="head">
+                                <h3>성취도 원형 차트</h3>
+                            </div>
+                            <div class="body">
+                                <div class="chart-container">
+                                    <canvas id="achievementChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="tail"></div>
+                        </div>
+                        <div class="card">
+                            <div class="head">
+                                <h3>학습 속도 비교 차트</h3>
+                            </div>
+                            <div class="body">
+                                <div class="chart-container">
+                                    <canvas id="speedChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="tail"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="head">
+                    <h2>학습 유형별 성공률 및 학습 시간 분석</h2>
+                </div>
+                <div class="body">
+                    <div class="grid-sub-container">
+                        <div class="card">
+                            <div class="head">
+                                <h3>학습 유형별 성공률</h3>
+                            </div>
+                            <div class="body">
+                                <div class="chart">
+                                    <svg id="successRateChart" width="100%" height="300"></svg>
+                                </div>
+                            </div>
+                            <div class="tail"></div>
+                        </div>
+                        <div class="card">
+                            <div class="head">
+                                <h3>학습 시간 분석</h3>
+                            </div>
+                            <div class="body">
+                                <div class="chart">
+                                    <svg id="timeAnalysisHeatmap" width="100%" height="300"></svg>
+                                </div>
+                            </div>
+                            <div class="tail"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="head">
+                    <h2>학습 추천 및 피드백</h2>
+                </div>
+                <div class="body">
+                    <div class="card">
+                        <div class="head">
+                            <h3>보충 학습 및 심화 학습 추천</h3>
+                        </div>
+                        <div class="body">
+                            <div class="feedback">
+                                <span class="material-icons">error_outline</span> 방정식 문제에서 어려움을 겪고 있습니다. 기초 복습 자료를 추천합니다.
+                            </div>
+                            <div class="feedback">
+                                <span class="material-icons">check_circle_outline</span> 기하 문제에서 높은 성취도를 달성하셨습니다. 심화 문제 풀이를 추천합니다.
+                            </div>
+                        </div>
+                        <div class="tail"></div>
+                    </div>
+                    <div class="card">
+                        <div class="head">
+                            <h3>실시간 피드백</h3>
+                        </div>
+                        <div class="body">
+                            <div class="feedback warning">
+                                <span class="material-icons">warning</span> 방정식 문제 풀이 시간이 예상보다 길어지고 있습니다. 복습을 권장합니다.
+                            </div>
+                        </div>
+                        <div class="tail"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="head">
+                    <h2>추가 학습 목표</h2>
+                </div>
+                <div class="body">
+                    <div class="card">
+                        <div class="head">
+                            <h3>목표 설정</h3>
+                        </div>
+                        <div class="body">
+                            <div class="goal-setting">
+                                <span class="material-icons">check_circle</span> 방정식 과정을 완료했습니다. 다음 학습 목표로 <a href="#">기하</a>를 설정하시겠습니까?
+                            </div>
+                        </div>
+                        <div class="tail"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>학습 리포트 제공 © 2024 LearnOptimus</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // 성취도 원형 차트
+            const achievementCtx = document.getElementById("achievementChart").getContext("2d");
+            new Chart(achievementCtx, {
+                type: "doughnut",
+                data: {
+                    labels: ["방정식", "기하", "확률과 통계"],
+                    datasets: [{
+                        label: "학습 성취도",
+                        data: [80, 50, 70],
+                        backgroundColor: ["#3B82F6", "#34D399", "#F59E0B"],
+                        borderColor: ["#2563EB", "#10B981", "#D97706"],
+                        borderWidth: 2,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
+            });
+
+            // 학습 속도 비교 차트
+            // 학습 속도 비교 차트
+            const speedCtx = document.getElementById("speedChart").getContext("2d");
+            new Chart(speedCtx, {
+                type: "bar",
+                data: {
+                    labels: ["방정식", "기하", "확률과 통계"],
+                    datasets: [
+                        {
+                            label: "목표 속도(일)",
+                            data: [10, 12, 15],
+                            backgroundColor: "#3B82F6",
+                            borderColor: "#2563EB",
+                            borderWidth: 1,
+                        },
+                        {
+                            label: "실제 속도(일)",
+                            data: [12, 14, 13],
+                            backgroundColor: "#34D399",
+                            borderColor: "#10B981",
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                },
+            });
+
+            // 차트 크기 조정 함수
+            function resizeCharts() {
+                const charts = document.querySelectorAll('.chart-container canvas');
+                charts.forEach(chart => {
+                    chart.style.width = '100%';
+                    chart.style.height = '100%';
+                });
+            }
+
+            // 초기 렌더링 시와 창 크기 변경 시 차트 크기 조정
+            resizeCharts();
+            window.addEventListener('resize', resizeCharts);
+            
+            // D3.js 차트 렌더링 함수
+            function renderD3Charts() {
+                // 학습 유형별 성공률 막대 차트
+                const successRateData = [
+                    { type: "방정식", successRate: 85 },
+                    { type: "기하", successRate: 60 },
+                    { type: "확률과 통계", successRate: 70 },
+                ];
+
+                const svgWidth = parseInt(d3.select("#successRateChart").style("width"));
+                const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+                const width = svgWidth - margin.left - margin.right;
+                const height = 300 - margin.top - margin.bottom;
+
+                const x = d3.scaleBand()
+                    .domain(successRateData.map(d => d.type))
+                    .range([0, width])
+                    .padding(0.2);
+
+                const y = d3.scaleLinear()
+                    .domain([0, 100])
+                    .range([height, 0]);
+
+                const svg = d3.select("#successRateChart")
+                    .attr("viewBox", `0 0 ${svgWidth} 300`)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                svg.append("g")
+                    .attr("transform", `translate(0,${height})`)
+                    .call(d3.axisBottom(x));
+
+                svg.append("g")
+                    .call(d3.axisLeft(y).ticks(10));
+
+                svg.selectAll(".bar")
+                    .data(successRateData)
+                    .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", d => x(d.type))
+                    .attr("y", d => y(d.successRate))
+                    .attr("width", x.bandwidth())
+                    .attr("height", d => height - y(d.successRate))
+                    .attr("fill", d => {
+                        if (d.successRate > 80) return "#3B82F6";
+                        else if (d.successRate > 60) return "#34D399";
+                        else return "#F59E0B";
+                    });
+
+                // 학습 시간 분석 히트맵
+                const heatmapData = [
+                    { type: "방정식", week: 1, timeSpent: 5 },
+                    { type: "방정식", week: 2, timeSpent: 8 },
+                    { type: "방정식", week: 3, timeSpent: 7 },
+                    { type: "기하", week: 1, timeSpent: 4 },
+                    { type: "기하", week: 2, timeSpent: 9 },
+                    { type: "기하", week: 3, timeSpent: 6 },
+                    { type: "확률과 통계", week: 1, timeSpent: 3 },
+                    { type: "확률과 통계", week: 2, timeSpent: 7 },
+                    { type: "확률과 통계", week: 3, timeSpent: 10 },
+                ];
+
+                const heatmapWidth = svgWidth - margin.left - margin.right;
+                const heatmapHeight = 300 - margin.top - margin.bottom;
+
+                const heatmapSvg = d3.select("#timeAnalysisHeatmap")
+                    .attr("viewBox", `0 0 ${svgWidth} 300`)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                const heatmapX = d3.scaleBand()
+                    .domain([1, 2, 3])
+                    .range([0, heatmapWidth])
+                    .padding(0.05);
+
+                const heatmapY = d3.scaleBand()
+                    .domain(heatmapData.map(d => d.type))
+                    .range([heatmapHeight, 0])
+                    .padding(0.05);
+
+                const colorScale = d3.scaleSequential()
+                    .interpolator(d3.interpolateBlues)
+                    .domain([0, 10]);
+
+                heatmapSvg.append("g")
+                    .attr("transform", `translate(0,${heatmapHeight})`)
+                    .call(d3.axisBottom(heatmapX).tickFormat(d => `${d}주차`));
+
+                heatmapSvg.append("g")
+                    .call(d3.axisLeft(heatmapY));
+
+                heatmapSvg.selectAll()
+                    .data(heatmapData, d => `${d.type}:${d.week}`)
+                    .enter()
+                    .append("rect")
+                    .attr("x", d => heatmapX(d.week))
+                    .attr("y", d => heatmapY(d.type))
+                    .attr("width", heatmapX.bandwidth())
+                    .attr("height", heatmapY.bandwidth())
+                    .style("fill", d => colorScale(d.timeSpent));
+
+                heatmapSvg.selectAll()
+                    .data(heatmapData, d => `${d.type}:${d.week}`)
+                    .enter()
+                    .append("text")
+                    .attr("x", d => heatmapX(d.week) + heatmapX.bandwidth() / 2)
+                    .attr("y", d => heatmapY(d.type) + heatmapY.bandwidth() / 2)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .style("fill", "white")
+                    .style("font-size", "12px")
+                    .text(d => `${d.timeSpent}h`);
+            }
+
+            // 초기 렌더링
+            renderD3Charts();
+
+            // 창 크기 변경 시 차트 다시 그리기
+            window.addEventListener("resize", function() {
+                d3.select("#successRateChart").selectAll("*").remove();
+                d3.select("#timeAnalysisHeatmap").selectAll("*").remove();
+                renderD3Charts();
+            });
+        });
+    </script>
+</body>
+</html>
